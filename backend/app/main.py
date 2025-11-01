@@ -1,12 +1,16 @@
 """
 CreditSphere API - Main FastAPI Application
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
 from loguru import logger
 import sys
 
 from app.core import settings
+from app.core.rate_limit import limiter
+from app.api import auth, quota
 
 # Configure logger
 logger.remove()
@@ -25,6 +29,10 @@ app = FastAPI(
     redoc_url="/redoc" if settings.APP_ENV == "development" else None
 )
 
+# Add rate limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +41,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(auth.router)
+app.include_router(quota.router)
 
 
 @app.on_event("startup")
