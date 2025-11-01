@@ -12,6 +12,7 @@ from app.core.deps import get_current_active_user
 from app.models.models import User, Statement, Transaction
 from app.services.storage import StorageService
 from app.services.quota import QuotaService
+from app.services.parser import StatementParser
 from app.schemas.files import (
     UploadResponse,
     StatementResponse,
@@ -63,16 +64,22 @@ async def upload_file(
             f"{file.filename} ({source_type})"
         )
         
-        # TODO: Enqueue background parsing task
-        # from app.workers.parser import parse_statement_task
-        # parse_statement_task.delay(statement.id)
+        # Parse statement immediately
+        # TODO: Move to background task queue for production
+        message = "File uploaded successfully."
+        try:
+            txn_count = StatementParser.parse_statement(statement, db)
+            message = f"File uploaded and parsed successfully. {txn_count} transactions created."
+        except Exception as e:
+            logger.error(f"Parsing failed for statement {statement.id}: {e}")
+            message = f"File uploaded but parsing failed. You can retry parsing later."
         
         return UploadResponse(
             statement_id=statement.id,
             filename=file.filename,
             size_bytes=file_size,
             source_type=source_type,
-            message=f"File uploaded successfully. Parsing will begin shortly."
+            message=message
         )
         
     except ValueError as e:
