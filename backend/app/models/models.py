@@ -157,7 +157,7 @@ class Transaction(Base):
     subcategory = Column(String(50))
     
     tags = Column(JSON)  # List of tag IDs
-    metadata = Column(JSON)  # Additional data
+    meta_data = Column(JSON)  # Additional data (renamed from metadata to avoid SQLAlchemy conflict)
     
     notes = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
