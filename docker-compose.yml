@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: creditsphere-db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: fin
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d fin"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - creditsphere
+
+  redis:
+    image: redis:7-alpine
+    container_name: creditsphere-redis
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - creditsphere
+
+  backend:
+    build: ./backend
+    container_name: creditsphere-backend
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backend_data:/app/data
+      - ./backend:/app:delegated
+    ports:
+      - "8000:8000"
+    networks:
+      - creditsphere
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: creditsphere-frontend
+    env_file: .env
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app:delegated
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    networks:
+      - creditsphere
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  backend_data:
+
+networks:
+  creditsphere:
+    driver: bridge

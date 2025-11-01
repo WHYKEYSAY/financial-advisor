@@ -1,8 +1,0 @@
-# Financial Advisor Software Dependencies
-# 理财建议软件依赖
-
-# No external dependencies required for basic functionality
-# Additional optional packages for future enhancements:
-# matplotlib>=3.5.0  # For financial charts and visualizations
-# pandas>=1.4.0      # For data analysis
-# numpy>=1.22.0      # For numerical calculations
