@@ -10,7 +10,7 @@ import sys
 
 from app.core import settings
 from app.core.rate_limit import limiter
-from app.api import auth, quota
+from app.api import auth, quota, files
 
 # Configure logger
 logger.remove()
@@ -45,6 +45,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth.router)
 app.include_router(quota.router)
+app.include_router(files.router)
 
 
 @app.on_event("startup")
