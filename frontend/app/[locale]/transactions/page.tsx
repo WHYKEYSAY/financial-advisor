@@ -1,8 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-
-export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 
