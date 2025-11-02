@@ -1,0 +1,111 @@
+{
+  "brand": {
+    "name": "CreditSphere",
+    "tagline": "您的 AI 金融管家"
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "仪表板",
+    "transactions": "交易记录",
+    "pricing": "价格",
+    "login": "登录",
+    "register": "注册",
+    "logout": "登出"
+  },
+  "hero": {
+    "title": "您的 AI 金融管家",
+    "subtitle": "自动分析支出、最大化信用卡收益、并智能优化您的信用健康。",
+    "cta_primary": "立即免费开始分析您的支出",
+    "cta_secondary": "解锁您的信用卡最大潜力"
+  },
+  "auth": {
+    "login_title": "欢迎回来",
+    "register_title": "免费开始",
+    "email": "邮箱",
+    "password": "密码",
+    "login_button": "登录",
+    "register_button": "创建账户",
+    "no_account": "还没有账户？",
+    "have_account": "已有账户？",
+    "sign_up": "注册",
+    "sign_in": "登录"
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "upload": "上传账单",
+    "recent_transactions": "最近交易",
+    "spending_breakdown": "支出分析",
+    "stats": "统计数据"
+  },
+  "transactions": {
+    "title": "交易记录",
+    "search": "搜索交易...",
+    "filter_category": "按类别筛选",
+    "date": "日期",
+    "merchant": "商家",
+    "category": "类别",
+    "amount": "金额",
+    "no_transactions": "未找到交易记录"
+  },
+  "categories": {
+    "groceries": "超市购物",
+    "dining": "餐饮",
+    "subscription": "订阅服务",
+    "transport": "交通",
+    "rent": "房租",
+    "travel": "旅行",
+    "utilities": "水电气",
+    "pharmacy": "药店",
+    "gas": "加油",
+    "entertainment": "娱乐",
+    "shopping": "购物",
+    "other": "其他"
+  },
+  "pricing": {
+    "title": "选择您的方案",
+    "analyst": {
+      "name": "分析师版",
+      "price": "免费",
+      "description": "适合入门用户",
+      "features": [
+        "账单上传",
+        "基础分类",
+        "饼图可视化",
+        "年度总结",
+        "每月 100 次 AI 调用"
+      ]
+    },
+    "optimizer": {
+      "name": "优化师版",
+      "price_monthly": "¥68/月",
+      "price_yearly": "¥688/年",
+      "description": "最大化您的奖励",
+      "features": [
+        "分析师版所有功能",
+        "奖励引擎",
+        "信用管理指导",
+        "深度 AI 分析",
+        "每月 1,000 次 AI 调用"
+      ]
+    },
+    "autopilot": {
+      "name": "自动驾驶版",
+      "price_monthly": "¥138/月",
+      "price_yearly": "¥1,388/年",
+      "description": "全自动管理",
+      "features": [
+        "优化师版所有功能",
+        "自动支付",
+        "实时提醒",
+        "高级集成",
+        "每月 3,000 次 AI 调用"
+      ]
+    },
+    "cta": "立即开始"
+  },
+  "footer": {
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "coming_soon": "即将推出"
+  }
+}
