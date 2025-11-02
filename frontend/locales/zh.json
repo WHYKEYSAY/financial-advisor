@@ -23,19 +23,28 @@
     "register_title": "免费开始",
     "email": "邮箱",
     "password": "密码",
+    "confirm_password": "确认密码",
     "login_button": "登录",
     "register_button": "创建账户",
     "no_account": "还没有账户？",
     "have_account": "已有账户？",
-    "sign_up": "注册",
-    "sign_in": "登录"
+    "register_link": "注册",
+    "login_link": "登录",
+    "loading": "加载中...",
+    "password_mismatch": "密码不匹配",
+    "error_generic": "发生错误，请重试。"
   },
   "dashboard": {
     "title": "仪表板",
     "upload": "上传账单",
     "recent_transactions": "最近交易",
     "spending_breakdown": "支出分析",
-    "stats": "统计数据"
+    "stats": "统计数据",
+    "upload_success": "文件上传成功！处理中...",
+    "upload_error": "文件上传失败，请重试。",
+    "total_transactions": "总交易数",
+    "total_spent": "总支出",
+    "average_transaction": "平均交易"
   },
   "transactions": {
     "title": "交易记录",

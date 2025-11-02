@@ -6,11 +6,6 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000',
   },
-  experimental: {
-    serverActions: {
-      enabled: true,
-    },
-  },
 };
 
 export default nextConfig;

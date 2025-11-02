@@ -23,19 +23,28 @@
     "register_title": "Get Started Free",
     "email": "Email",
     "password": "Password",
+    "confirm_password": "Confirm Password",
     "login_button": "Sign In",
     "register_button": "Create Account",
     "no_account": "Don't have an account?",
     "have_account": "Already have an account?",
-    "sign_up": "Sign up",
-    "sign_in": "Sign in"
+    "register_link": "Sign up",
+    "login_link": "Sign in",
+    "loading": "Loading...",
+    "password_mismatch": "Passwords do not match",
+    "error_generic": "An error occurred. Please try again."
   },
   "dashboard": {
     "title": "Dashboard",
     "upload": "Upload Statement",
     "recent_transactions": "Recent Transactions",
     "spending_breakdown": "Spending Breakdown",
-    "stats": "Statistics"
+    "stats": "Statistics",
+    "upload_success": "File uploaded successfully! Processing...",
+    "upload_error": "Failed to upload file. Please try again.",
+    "total_transactions": "Total Transactions",
+    "total_spent": "Total Spent",
+    "average_transaction": "Average Transaction"
   },
   "transactions": {
     "title": "Transactions",
