@@ -10,6 +10,7 @@ from app.models.models import Statement, Transaction, User, Merchant
 from app.services.parsers.csv_parser import CSVParser
 from app.services.parsers.pdf_parser import PDFParser
 from app.services.parsers.image_parser import ImageParser
+from app.services.categorization import categorization_service
 
 
 class StatementParser:
@@ -86,6 +87,14 @@ class StatementParser:
                 
                 db.add(transaction)
                 transactions_created += 1
+            
+            # Commit transactions first
+            db.commit()
+            
+            # Now categorize them
+            if transactions_created > 0:
+                logger.info(f"Categorizing {transactions_created} transactions...")
+                categorization_service.batch_categorize(db, statement.user_id, limit=transactions_created)
             
             # Update statement as parsed
             statement.parsed = True
