@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from loguru import logger
 
 from app.models.models import Merchant, Transaction
+from app.services.quota import QuotaService
 
 
 class CategorizationService:
@@ -201,13 +202,66 @@ class CategorizationService:
             
             return canonical_name, category
         
-        # No match found - will need AI fallback later
-        logger.debug(f"No match for merchant: {transaction.raw_merchant}")
+        # No match found - try AI fallback
+        logger.debug(f"No fuzzy match for merchant: {transaction.raw_merchant}, trying AI...")
         
-        # Set category to 'other' for now
-        transaction.category = "other"
-        
-        return None, "other"
+        try:
+            # Import here to avoid circular dependency
+            from app.services.ai import ai_service
+            from app.models.models import User
+            
+            # Get user for quota check
+            user = db.query(User).filter(User.id == transaction.user_id).first()
+            if not user:
+                transaction.category = "other"
+                return None, "other"
+            
+            # Check AI quota
+            try:
+                QuotaService.check_ai_quota(db, user, user.locale)
+            except Exception as quota_error:
+                # Quota exceeded, use fallback
+                logger.warning(f"AI quota exceeded for user {user.id}: {quota_error}")
+                transaction.category = "other"
+                return None, "other"
+            
+            # Use AI for normalization and categorization
+            canonical_name, confidence = ai_service.normalize_merchant(
+                transaction.raw_merchant,
+                transaction.amount,
+                user.locale
+            )
+            
+            category, subcategory, cat_confidence = ai_service.categorize_transaction(
+                canonical_name,
+                transaction.amount,
+                transaction.raw_merchant,
+                user.locale
+            )
+            
+            # Create merchant if AI confidence is high enough
+            if confidence >= 70:
+                merchant = self.get_or_create_merchant(db, canonical_name, transaction.raw_merchant)
+                transaction.merchant_id = merchant.id
+            
+            transaction.category = category
+            if subcategory:
+                transaction.subcategory = subcategory
+            
+            # Increment AI quota
+            QuotaService.increment_ai_calls(db, user, count=2)  # 2 calls: normalize + categorize
+            
+            logger.info(
+                f"AI processed transaction {transaction.id}: '{transaction.raw_merchant}' -> "
+                f"'{canonical_name}' ({category}) [confidence: {cat_confidence}]"
+            )
+            
+            return canonical_name, category
+            
+        except Exception as e:
+            logger.error(f"AI fallback failed: {e}")
+            transaction.category = "other"
+            return None, "other"
     
     def batch_categorize(
         self,
