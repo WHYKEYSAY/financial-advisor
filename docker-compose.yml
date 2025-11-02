@@ -52,23 +52,19 @@ services:
       - creditsphere
     restart: unless-stopped
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: creditsphere-frontend
-  #   env_file: .env
-  #   environment:
-  #     - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-  #   depends_on:
-  #     - backend
-  #   volumes:
-  #     - ./frontend:/app:delegated
-  #     - /app/node_modules
-  #     - /app/.next
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - creditsphere
-  #   restart: unless-stopped
+  frontend:
+    build: ./frontend
+    container_name: creditsphere-frontend
+    env_file: .env
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - creditsphere
+    restart: unless-stopped
 
 volumes:
   db_data:
