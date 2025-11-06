@@ -11,7 +11,7 @@ from app.core.db import get_db
 from app.core.deps import get_current_active_user
 from app.models.models import User, Statement, Transaction
 from app.services.storage import StorageService
-from app.services.quota import QuotaService
+from app.services.quota import QuotaService, QuotaExceeded
 from app.services.parser import StatementParser
 from app.schemas.files import (
     UploadResponse,
@@ -34,11 +34,21 @@ async def upload_file(
     Upload a statement file (PDF, CSV, or image)
     
     - Validates file type and size
+    - Checks statement quota
     - Saves to user-specific storage directory
     - Creates Statement record with parsed=False
-    - TODO: Enqueue background parsing task
+    - Parses immediately and increments quota
     """
     try:
+        # Check statement quota BEFORE uploading
+        try:
+            QuotaService.check_statement_quota(db, current_user, current_user.locale)
+        except QuotaExceeded as qe:
+            raise HTTPException(status_code=402, detail={
+                "message": qe.message,
+                "upgrade_tier": qe.upgrade_tier,
+                "type": "statement_quota_exceeded"
+            })
         # Save file to storage
         file_path, file_size, source_type = await StorageService.save_upload(
             file,
@@ -56,19 +66,20 @@ async def upload_file(
         db.commit()
         db.refresh(statement)
         
-        # Increment files parsed counter
-        QuotaService.increment_files_parsed(db, current_user)
-        
         logger.info(
             f"User {current_user.id} uploaded statement {statement.id}: "
             f"{file.filename} ({source_type})"
         )
         
         # Parse statement immediately
-        # TODO: Move to background task queue for production
         message = "File uploaded successfully."
         try:
             txn_count = StatementParser.parse_statement(statement, db)
+            
+            # Only increment quota after successful parsing
+            QuotaService.increment_statements_parsed(db, current_user)
+            QuotaService.increment_files_parsed(db, current_user)  # Legacy
+            
             message = f"File uploaded and parsed successfully. {txn_count} transactions created."
         except Exception as e:
             logger.error(f"Parsing failed for statement {statement.id}: {e}")

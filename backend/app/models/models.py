@@ -108,6 +108,12 @@ class Statement(Base):
     file_path = Column(String(500), nullable=False)
     file_size = Column(Integer)
     parsed = Column(Boolean, default=False)
+    
+    # Statement metadata
+    institution = Column(String(100))  # CIBC, RBC, MBNA, PC Financial
+    account_type = Column(String(50))  # credit_card, checking, savings
+    account_number = Column(String(50))  # Last 4 digits or masked number
+    
     period_start = Column(Date)
     period_end = Column(Date)
     transaction_count = Column(Integer, default=0)
@@ -117,6 +123,7 @@ class Statement(Base):
     
     # Relationships
     user = relationship("User", back_populates="statements")
+    transactions = relationship("Transaction", back_populates="statement")
     
     __table_args__ = (
         Index("idx_statement_user_parsed", "user_id", "parsed"),
@@ -144,6 +151,7 @@ class Transaction(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    statement_id = Column(Integer, ForeignKey("statements.id", ondelete="SET NULL"), index=True)
     account_id = Column(Integer, ForeignKey("accounts.id", ondelete="SET NULL"))
     card_id = Column(Integer, ForeignKey("cards.id", ondelete="SET NULL"))
     merchant_id = Column(Integer, ForeignKey("merchants.id", ondelete="SET NULL"), index=True)
@@ -165,6 +173,7 @@ class Transaction(Base):
     
     # Relationships
     user = relationship("User", back_populates="transactions")
+    statement = relationship("Statement", back_populates="transactions")
     account = relationship("Account", back_populates="transactions")
     card = relationship("Card", back_populates="transactions")
     merchant = relationship("Merchant", back_populates="transactions")
@@ -244,14 +253,64 @@ class Quota(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False)
     period_start = Column(DateTime(timezone=True), nullable=False)
     period_end = Column(DateTime(timezone=True), nullable=False)
+    
+    # Statement-based quota (primary)
+    statements_parsed = Column(Integer, default=0)
+    statements_limit = Column(Integer, nullable=False)  # 5 for analyst, 50 for optimizer, unlimited for autopilot
+    
+    # AI-based quota (fallback for unknown merchants)
     ai_calls_used = Column(Integer, default=0)
     ai_calls_limit = Column(Integer, nullable=False)
-    files_parsed = Column(Integer, default=0)
+    
+    files_parsed = Column(Integer, default=0)  # Legacy, kept for compatibility
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationships
     user = relationship("User", back_populates="quota")
+
+
+class CreditCard(Base):
+    """Credit card products database (for recommendations)"""
+    __tablename__ = "credit_cards"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    issuer = Column(String(100), nullable=False, index=True)  # MBNA, RBC, PC Financial, etc.
+    product_name = Column(String(200), nullable=False)  # World Elite Mastercard, Avion Visa, etc.
+    card_network = Column(String(50))  # Mastercard, Visa, Amex
+    
+    # Costs
+    annual_fee = Column(Numeric(10, 2), nullable=False, default=0)
+    foreign_transaction_fee = Column(Float)  # Percentage
+    
+    # Rewards structure (JSON)
+    # Format: {"groceries": {"rate": 3.0, "type": "points"}, "gas": {"rate": 2.0, "type": "cashback"}, ...}
+    rewards = Column(JSON, nullable=False)
+    
+    # Welcome bonus
+    welcome_bonus = Column(JSON)  # {"value": 350, "condition": "Spend $3000 in 3 months", "type": "points"}
+    
+    # Benefits
+    insurance_benefits = Column(JSON)  # List: ["travel_medical", "car_rental", "mobile_device"]
+    other_perks = Column(JSON)  # List: ["lounge_access", "concierge", ...]
+    
+    # Eligibility
+    min_income = Column(Integer)  # Minimum personal income
+    min_household_income = Column(Integer)  # Minimum household income
+    
+    # Additional info
+    apply_url = Column(String(500))  # Application link
+    image_url = Column(String(500))  # Card image URL
+    description = Column(Text)  # Short description
+    
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    __table_args__ = (
+        Index("idx_creditcard_issuer_product", "issuer", "product_name", unique=True),
+        Index("idx_creditcard_active", "is_active"),
+    )
 
 
 class PaymentPlan(Base):

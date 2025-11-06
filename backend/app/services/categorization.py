@@ -72,6 +72,9 @@ class CategorizationService:
         if not text:
             return ""
         
+        # Remove newlines and tabs first
+        text = text.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
+        
         # Lowercase
         text = text.lower().strip()
         
@@ -216,11 +219,11 @@ class CategorizationService:
                 transaction.category = "other"
                 return None, "other"
             
-            # Check AI quota
+            # Check AI quota (only when fuzzy matching fails)
             try:
                 QuotaService.check_ai_quota(db, user, user.locale)
             except Exception as quota_error:
-                # Quota exceeded, use fallback
+                # AI quota exceeded, use fallback
                 logger.warning(f"AI quota exceeded for user {user.id}: {quota_error}")
                 transaction.category = "other"
                 return None, "other"

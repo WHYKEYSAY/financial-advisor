@@ -15,8 +15,11 @@ class PDFParser:
     DATE_PATTERNS = [
         r'\b\d{4}-\d{2}-\d{2}\b',  # 2024-01-15
         r'\b\d{2}/\d{2}/\d{4}\b',  # 01/15/2024
+        r'\b\d{2}/\d{2}/\d{2}\b',  # 01/15/25 (MM/DD/YY)
+        r'\b\d{2}/\d{2}\b',  # 15/08 (DD/MM without year)
         r'\b\d{2}-\d{2}-\d{4}\b',  # 15-01-2024
         r'\b[A-Za-z]{3}\s+\d{1,2},\s+\d{4}\b',  # Jan 15, 2024
+        r'\b[A-Z]{3}\s+\d{1,2}\b',  # OCT 01 (month abbreviation)
     ]
     
     # Common amount patterns
@@ -104,8 +107,11 @@ class PDFParser:
             return []
     
     @staticmethod
-    def parse_date_from_text(text: str) -> Optional[datetime]:
+    def parse_date_from_text(text: str, default_year: Optional[int] = None) -> Optional[datetime]:
         """Extract and parse date from text"""
+        if default_year is None:
+            default_year = datetime.now().year
+            
         for pattern in PDFParser.DATE_PATTERNS:
             match = re.search(pattern, text)
             if match:
@@ -115,14 +121,21 @@ class PDFParser:
                 formats = [
                     "%Y-%m-%d",
                     "%m/%d/%Y",
+                    "%m/%d/%y",  # MM/DD/YY
+                    "%d/%m",  # DD/MM without year
                     "%d-%m-%Y",
                     "%b %d, %Y",
                     "%B %d, %Y",
+                    "%b %d",  # OCT 01 without year
                 ]
                 
                 for fmt in formats:
                     try:
-                        return datetime.strptime(date_str, fmt)
+                        parsed = datetime.strptime(date_str, fmt)
+                        # If year is missing (strptime defaults to 1900), use default_year
+                        if parsed.year == 1900:
+                            parsed = parsed.replace(year=default_year)
+                        return parsed
                     except ValueError:
                         continue
         
@@ -152,6 +165,123 @@ class PDFParser:
                     continue
         
         return None
+    
+    @staticmethod
+    def extract_cibc_bank_transactions(text: str) -> List[Dict]:
+        """
+        Extract CIBC bank account transactions (checking/savings)
+        Pattern: Date Description Amount Balance
+        """
+        transactions = []
+        
+        # Pattern for CIBC bank transactions
+        # Examples:
+        # "OCT 01 INTERNET TRANSFER FROM 12345 200.00 1,234.56"
+        # "OCT 05 E-TRANSFER TO JOHN DOE 50.00 1,184.56"
+        # "OCT 10 PREAUTHORIZED DEBIT - NETFLIX 15.99 1,168.57"
+        pattern = r'([A-Z]{3}\s+\d{1,2})\s+((?:INTERNET TRANSFER|E-TRANSFER|PREAUTHORIZED DEBIT|DIRECT DEPOSIT|WITHDRAWAL|DEPOSIT)[^\d]+?)\s+(\d{1,3}(?:,\d{3})*\.\d{2})(?:\s+[\d,]+\.\d{2})?'
+        
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            date_str = match.group(1)
+            description = match.group(2).strip()
+            amount_str = match.group(3)
+            
+            # Parse date (with current year as default)
+            try:
+                trans_date = datetime.strptime(date_str, "%b %d")
+                trans_date = trans_date.replace(year=datetime.now().year)
+            except ValueError:
+                continue
+            
+            # Parse amount
+            try:
+                amount = float(amount_str.replace(',', ''))
+                
+                # Determine if withdrawal or deposit based on description
+                if any(keyword in description.upper() for keyword in ['TRANSFER TO', 'WITHDRAWAL', 'DEBIT', 'PAYMENT']):
+                    amount = -amount  # Outflow
+                # TRANSFER FROM, DEPOSIT, DIRECT DEPOSIT stay positive (inflow)
+                
+            except ValueError:
+                continue
+            
+            # Clean description
+            description = ' '.join(description.split())
+            
+            transaction = {
+                "date": trans_date,
+                "amount": amount,
+                "description": description,
+                "currency": "CAD",
+                "raw_data": {"text_match": match.group(0), "type": "bank_transfer"}
+            }
+            
+            transactions.append(transaction)
+        
+        logger.info(f"Extracted {len(transactions)} CIBC bank transactions")
+        return transactions
+    
+    @staticmethod
+    def extract_transactions_from_text(file_path: str) -> List[Dict]:
+        """
+        Extract transactions from PDF text using pattern matching
+        Useful for credit card statements where table extraction fails
+        """
+        transactions = []
+        
+        try:
+            text = PDFParser.extract_text_from_pdf(file_path)
+            
+            # Try CIBC bank account pattern first
+            cibc_transactions = PDFParser.extract_cibc_bank_transactions(text)
+            if cibc_transactions:
+                return cibc_transactions
+            
+            # Pattern for credit card statements
+            # Example: 08/15/25 08/18/25 UBER CANADA/UBERTRIP TORONTO ON 9196 $27.78
+            pattern = r'(\d{2}/\d{2}/\d{2})\s+(\d{2}/\d{2}/\d{2})\s+([A-Z][\w\s\'/&#.-]+?)\s+([A-Z\s]+)\s+(?:[A-Z]{2})?\s*\d+\s+\$?(-?\d+\.\d{2})'
+            
+            for match in re.finditer(pattern, text):
+                trans_date_str = match.group(1)
+                post_date_str = match.group(2)
+                description = match.group(3).strip()
+                location = match.group(4).strip()
+                amount_str = match.group(5)
+                
+                # Parse transaction date
+                try:
+                    trans_date = datetime.strptime(trans_date_str, "%m/%d/%y")
+                except ValueError:
+                    continue
+                
+                # Parse amount (make negative for expenses)
+                try:
+                    amount = float(amount_str)
+                    if amount > 0:
+                        amount = -amount  # Credit card charges are negative
+                except ValueError:
+                    continue
+                
+                # Combine description and location, clean newlines
+                full_description = f"{description} {location}".strip()
+                full_description = ' '.join(full_description.split())  # Remove extra whitespace and newlines
+                
+                transaction = {
+                    "date": trans_date,
+                    "amount": amount,
+                    "description": full_description,
+                    "currency": "CAD",
+                    "raw_data": {"text_match": match.group(0)}
+                }
+                
+                transactions.append(transaction)
+            
+            logger.info(f"Extracted {len(transactions)} transactions using text pattern matching")
+            
+        except Exception as e:
+            logger.error(f"Text-based extraction failed: {e}")
+        
+        return transactions
     
     @staticmethod
     def parse(file_path: str) -> List[Dict]:
@@ -205,7 +335,7 @@ class PDFParser:
                     
                     # Get description (cells between date and amount)
                     description = " ".join(row[1:-1]) if len(row) > 2 else row_text
-                    description = description.strip()
+                    description = ' '.join(description.split())  # Clean whitespace and newlines
                     
                     transaction = {
                         "date": date,
@@ -217,7 +347,13 @@ class PDFParser:
                     
                     transactions.append(transaction)
             
-            logger.info(f"Parsed {len(transactions)} transactions from PDF")
+            logger.info(f"Parsed {len(transactions)} transactions from table extraction")
+            
+            # If no transactions found from tables, try text-based extraction
+            if not transactions:
+                logger.info("Falling back to text-based transaction extraction")
+                transactions = PDFParser.extract_transactions_from_text(file_path)
+                logger.info(f"Parsed {len(transactions)} transactions from text extraction")
             
             if not transactions:
                 logger.warning(

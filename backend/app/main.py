@@ -10,7 +10,7 @@ import sys
 
 from app.core import settings
 from app.core.rate_limit import limiter
-from app.api import auth, quota, files, transactions
+from app.api import auth, quota, files, transactions, accounts, recommendations, vcm
 
 # Configure logger
 logger.remove()
@@ -47,6 +47,9 @@ app.include_router(auth.router)
 app.include_router(quota.router)
 app.include_router(files.router)
 app.include_router(transactions.router)
+app.include_router(accounts.router)
+app.include_router(recommendations.router)
+app.include_router(vcm.router)
 
 
 @app.on_event("startup")

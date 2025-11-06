@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     # Security
     SECRET_KEY: str
     JWT_ALG: str = "HS256"
-    JWT_ACCESS_TTL_MIN: int = 15
+    JWT_ACCESS_TTL_MIN: int = 10080  # 7 days (7 * 24 * 60)
     JWT_REFRESH_TTL_DAYS: int = 14
     ENCRYPTION_KEY: str
     

@@ -2,7 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/api';
+import { ProtectedRoute } from '@/components/protected-route';
+import { useAuthStore } from '@/stores/auth-store';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 interface Transaction {
@@ -29,6 +32,7 @@ const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'
 
 export function DashboardClient() {
   const t = useTranslations();
+  const { user } = useAuthStore();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
@@ -103,11 +107,15 @@ export function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           {t('dashboard.title')}
         </h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-8">
+          Welcome back, {user?.email || 'User'}!
+        </p>
 
         {/* Upload Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
@@ -223,5 +231,6 @@ export function DashboardClient() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

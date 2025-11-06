@@ -56,11 +56,13 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
     
-    # Create quota for new user
+    # Create quota for new user (analyst tier = 5 statements/month)
     quota = Quota(
         user_id=user.id,
         period_start=datetime.utcnow(),
         period_end=datetime.utcnow() + timedelta(days=30),
+        statements_parsed=0,
+        statements_limit=5,  # Analyst tier: 5 statements per month
         ai_calls_used=0,
         ai_calls_limit=settings.AI_QUOTA_FREE
     )
@@ -157,10 +159,10 @@ def login(
 
 @router.post("/refresh", response_model=TokenResponse)
 def refresh(
+    response: Response,
+    db: Session = Depends(get_db),
     refresh_data: RefreshTokenRequest = None,
-    refresh_token_cookie: str = Cookie(default=None, alias="refresh_token"),
-    response: Response = None,
-    db: Session = Depends(get_db)
+    refresh_token_cookie: str = Cookie(default=None, alias="refresh_token")
 ):
     """
     Refresh access token using refresh token

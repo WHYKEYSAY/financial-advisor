@@ -10,7 +10,7 @@ from loguru import logger
 
 from app.core.db import get_db
 from app.core.deps import get_current_active_user
-from app.models.models import User, Transaction, Merchant
+from app.models.models import User, Transaction, Merchant, Statement
 from app.schemas.transactions import (
     TransactionResponse,
     TransactionListResponse,
@@ -27,6 +27,8 @@ def list_transactions(
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=200),
     category: Optional[str] = None,
+    institution: Optional[str] = None,
+    account_type: Optional[str] = None,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     search: Optional[str] = None,
@@ -38,6 +40,8 @@ def list_transactions(
     
     Filters:
     - category: Filter by category
+    - institution: Filter by bank (CIBC, RBC, MBNA, PC Financial, etc.)
+    - account_type: Filter by account type (credit_card, checking, savings)
     - start_date: Filter by start date
     - end_date: Filter by end date
     - search: Search in merchant name
@@ -50,6 +54,17 @@ def list_transactions(
     # Apply filters
     if category:
         query = query.filter(Transaction.category == category)
+    
+    if institution:
+        # Join with Statement to filter by institution
+        query = query.join(Statement, Transaction.statement_id == Statement.id)
+        query = query.filter(Statement.institution == institution)
+    
+    if account_type:
+        # Join with Statement if not already joined
+        if not institution:
+            query = query.join(Statement, Transaction.statement_id == Statement.id)
+        query = query.filter(Statement.account_type == account_type)
     
     if start_date:
         query = query.filter(Transaction.date >= start_date)
@@ -110,11 +125,18 @@ def list_transactions(
 def get_category_breakdown(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    institution: Optional[str] = None,
+    account_type: Optional[str] = None,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     """
     Get spending breakdown by category
+    
+    Optional filters:
+    - start_date/end_date: Date range (default: last 30 days)
+    - institution: Filter by bank
+    - account_type: Filter by account type
     
     Returns total spent per category with percentages
     """
@@ -125,11 +147,21 @@ def get_category_breakdown(
         start_date = end_date - timedelta(days=30)
     
     # Query category totals
-    results = db.query(
+    query = db.query(
         Transaction.category,
         func.sum(Transaction.amount).label('total'),
         func.count(Transaction.id).label('count')
-    ).filter(
+    )
+    
+    # Apply institution/account_type filters
+    if institution or account_type:
+        query = query.join(Statement, Transaction.statement_id == Statement.id)
+        if institution:
+            query = query.filter(Statement.institution == institution)
+        if account_type:
+            query = query.filter(Statement.account_type == account_type)
+    
+    results = query.filter(
         Transaction.user_id == current_user.id,
         Transaction.date >= start_date,
         Transaction.date <= end_date,
@@ -138,17 +170,18 @@ def get_category_breakdown(
         Transaction.category
     ).all()
     
-    # Calculate total for percentages
-    grand_total = sum(r.total for r in results if r.total > 0)
+    # Calculate total for percentages (use absolute values for spending)
+    grand_total = sum(abs(r.total) for r in results if r.total < 0)
     
     # Build response
     breakdown = []
     for result in results:
-        if result.total > 0:  # Only positive amounts (spending)
-            percentage = (result.total / grand_total * 100) if grand_total > 0 else 0
+        if result.total < 0:  # Only negative amounts (spending)
+            amount = abs(result.total)
+            percentage = (amount / grand_total * 100) if grand_total > 0 else 0
             breakdown.append(CategoryBreakdownResponse(
                 category=result.category,
-                total=float(result.total),
+                total=float(amount),
                 percentage=round(percentage, 2),
                 count=result.count
             ))
@@ -163,11 +196,18 @@ def get_category_breakdown(
 def get_transaction_stats(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    institution: Optional[str] = None,
+    account_type: Optional[str] = None,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     """
     Get transaction statistics
+    
+    Optional filters:
+    - start_date/end_date: Date range (default: last 30 days)
+    - institution: Filter by bank
+    - account_type: Filter by account type
     
     Returns:
     - Total transactions
@@ -183,7 +223,17 @@ def get_transaction_stats(
         start_date = end_date - timedelta(days=30)
     
     # Get transactions
-    transactions = db.query(Transaction).filter(
+    query = db.query(Transaction)
+    
+    # Apply institution/account_type filters
+    if institution or account_type:
+        query = query.join(Statement, Transaction.statement_id == Statement.id)
+        if institution:
+            query = query.filter(Statement.institution == institution)
+        if account_type:
+            query = query.filter(Statement.account_type == account_type)
+    
+    transactions = query.filter(
         Transaction.user_id == current_user.id,
         Transaction.date >= start_date,
         Transaction.date <= end_date
@@ -198,9 +248,9 @@ def get_transaction_stats(
             "top_category": None
         }
     
-    # Calculate stats
-    spending_txns = [t for t in transactions if t.amount > 0]
-    total_spent = sum(t.amount for t in spending_txns)
+    # Calculate stats (negative amounts are spending)
+    spending_txns = [t for t in transactions if t.amount < 0]
+    total_spent = sum(abs(t.amount) for t in spending_txns)
     avg_transaction = total_spent / len(spending_txns) if spending_txns else 0
     
     # Top merchant
@@ -215,7 +265,7 @@ def get_transaction_stats(
         else:
             name = txn.raw_merchant
         
-        merchant_totals[name] = merchant_totals.get(name, 0) + txn.amount
+        merchant_totals[name] = merchant_totals.get(name, 0) + abs(txn.amount)
     
     top_merchant = max(merchant_totals.items(), key=lambda x: x[1])[0] if merchant_totals else None
     
@@ -223,7 +273,7 @@ def get_transaction_stats(
     category_totals = {}
     for txn in spending_txns:
         if txn.category:
-            category_totals[txn.category] = category_totals.get(txn.category, 0) + txn.amount
+            category_totals[txn.category] = category_totals.get(txn.category, 0) + abs(txn.amount)
     
     top_category = max(category_totals.items(), key=lambda x: x[1])[0] if category_totals else None
     

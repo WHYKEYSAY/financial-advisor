@@ -68,6 +68,17 @@ docker-compose.override.yml
 /backend/app/data/uploads/
 /backend/data/
 
+# Test Data
+# Keep test_data/ structure but ignore sensitive files
+test_data/statements/*.pdf
+test_data/statements/*.csv
+!test_data/statements/sample_statement.csv  # Keep sample file
+test_data/**/__pycache__/
+test_data/**/*.pyc
+
 # Logs
 *.log
 logs/
+
+# Personal tracking notes
+track/

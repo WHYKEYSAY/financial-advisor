@@ -3,7 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuthStore } from '@/stores/auth-store';
 
 interface NavigationProps {
   locale: string;
@@ -12,13 +14,23 @@ interface NavigationProps {
 export function Navigation({ locale }: NavigationProps) {
   const t = useTranslations();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const { user, logout, initialize } = useAuthStore();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    initialize();
+  }, [initialize]);
 
   const toggleLocale = () => {
     const newLocale = locale === 'en' ? 'zh' : 'en';
     window.location.href = `/${newLocale}${window.location.pathname.replace(`/${locale}`, '')}`;
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    router.push(`/${locale}/login`);
   };
 
   return (
@@ -37,10 +49,26 @@ export function Navigation({ locale }: NavigationProps) {
             <Link href={`/${locale}`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
               {t('nav.home')}
             </Link>
-            <Link href={`/${locale}/dashboard`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-              {t('nav.dashboard')}
+            {user && (
+              <>
+                <Link href={`/${locale}/dashboard`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.dashboard')}
+                </Link>
+                <Link href={`/${locale}/upload`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.upload')}
+                </Link>
+                <Link href={`/${locale}/transactions`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.transactions')}
+                </Link>
+              </>
+            )}
+            <Link href={`/${locale}/pricing`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+              {t('nav.pricing')}
             </Link>
-            <Link href={`/${locale}/transactions`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+          </div>
+              {t('nav.pricing')}
+            </Link>
+          </div>
               {t('nav.transactions')}
             </Link>
             <Link href={`/${locale}/pricing`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
@@ -71,18 +99,34 @@ export function Navigation({ locale }: NavigationProps) {
             </button>
 
             {/* Auth Links */}
-            <Link
-              href={`/${locale}/login`}
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
-            >
-              {t('nav.login')}
-            </Link>
-            <Link
-              href={`/${locale}/register`}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium"
-            >
-              {t('nav.register')}
-            </Link>
+            {user ? (
+              <>
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  {user.email}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  {t('nav.logout')}
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href={`/${locale}/login`}
+                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                  {t('nav.login')}
+                </Link>
+                <Link
+                  href={`/${locale}/register`}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium"
+                >
+                  {t('nav.register')}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

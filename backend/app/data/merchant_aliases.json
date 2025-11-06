@@ -231,5 +231,87 @@
       "enbridge",
       "enbridge gas distribution"
     ]
+  },
+  "uber_canada": {
+    "canonical": "Uber",
+    "category": "transport",
+    "aliases": [
+      "uber canada",
+      "uber canada/ubertrip"
+    ]
+  },
+  "stm": {
+    "canonical": "STM Montreal",
+    "category": "transport",
+    "aliases": [
+      "stm",
+      "stm snowdon",
+      "stm bonaventure"
+    ]
+  },
+  "megabus": {
+    "canonical": "Megabus",
+    "category": "travel",
+    "aliases": [
+      "megabus canada"
+    ]
+  },
+  "kiwi": {
+    "canonical": "Kiwi.com",
+    "category": "travel",
+    "aliases": [
+      "kiwi.com",
+      "kiwi.com sro"
+    ]
+  },
+  "tnt": {
+    "canonical": "T&T Supermarket",
+    "category": "groceries",
+    "aliases": [
+      "t&t supermarket",
+      "tnt supermarket"
+    ]
+  },
+  "dollarama": {
+    "canonical": "Dollarama",
+    "category": "shopping",
+    "aliases": [
+      "dollarama"
+    ]
+  },
+  "pharmaprix": {
+    "canonical": "Pharmaprix",
+    "category": "pharmacy",
+    "aliases": [
+      "pharmaprix"
+    ]
+  },
+  "nespresso": {
+    "canonical": "Nespresso",
+    "category": "dining",
+    "aliases": [
+      "nespresso montreal"
+    ]
+  },
+  "lindt": {
+    "canonical": "Lindt",
+    "category": "shopping",
+    "aliases": [
+      "lindt canada"
+    ]
+  },
+  "miniso": {
+    "canonical": "MINISO",
+    "category": "shopping",
+    "aliases": [
+      "miniso"
+    ]
+  },
+  "snaplii": {
+    "canonical": "Snaplii",
+    "category": "shopping",
+    "aliases": [
+      "snaplii"
+    ]
   }
 }
