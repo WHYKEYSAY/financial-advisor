@@ -56,7 +56,8 @@ export function AuthForm({ mode, locale }: AuthFormProps) {
       
       // Redirect after successful auth
       const next = searchParams.get('next') || '/dashboard';
-      router.push(`/${locale}${next}`);
+      // Use window.location for hard navigation to ensure state is fresh
+      window.location.href = `/${locale}${next}`;
     } catch (err) {
       // Error is handled by store
     }
