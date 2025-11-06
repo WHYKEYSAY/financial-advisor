@@ -195,17 +195,28 @@
   },
   "upload": {
     "title": "Upload Statements",
+    "subtitle": "Accepted formats: PDF, CSV, PNG, JPG, JPEG",
     "instructions": "Upload your bank statements in PDF, CSV, or image format",
     "acceptTypes": "Accepted: PDF, CSV, PNG, JPG, JPEG",
     "sizeLimit": "Max file size: 25MB",
     "selectFiles": "Select Files",
     "dragDrop": "or drag and drop files here",
+    "dragTitle": "Drag files here to upload",
+    "supportedFormats": "Supported: PDF, CSV, PNG, JPG, JPEG",
+    "or": "or",
+    "clickToSelect": "Click to select files",
+    "multipleHint": "You can upload multiple files at once",
     "uploading": "Uploading...",
     "success": "Upload successful!",
     "failed": "Upload failed",
     "history": {
       "title": "Upload History",
       "empty": "No files uploaded yet"
+    },
+    "messages": {
+      "unsupportedType": "Unsupported file type",
+      "uploadFailed": "Upload failed",
+      "uploadSucceeded": "Upload successful"
     }
   },
   "errors": {
