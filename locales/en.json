@@ -14,9 +14,6 @@
     "upload": "Upload",
     "profile": "Profile"
   },
-  },
-    "logout": "Logout"
-  },
   "hero": {
     "title": "Your AI Financial Co-Pilot",
     "subtitle": "Automatically analyze spending, maximize credit card rewards, and optimize your credit health.",
@@ -92,21 +89,6 @@
     "no_cards": "No credit cards found",
     "card_details": "Card Details"
   },
-  "accounts": {
-    "title": "Account Overview",
-    "total_accounts": "Total Accounts",
-    "active_cards": "Active Cards",
-    "no_accounts": "No accounts connected yet"
-  },
-  "common": {
-    "view_all": "View all",
-    "retry": "Retry",
-    "loading": "Loading..."
-  },
-  "errors": {
-    "load_vcm": "Failed to load credit overview.",
-    "load_accounts": "Failed to load accounts."
-  },
   "pricing": {
     "title": "Choose Your Plan",
     "analyst": {
@@ -148,38 +130,6 @@
       ]
     },
     "cta": "Get Started"
-  },
-  "upload": {
-    "title": "Upload Bank Statement",
-    "subtitle": "Supported formats: PDF, CSV, PNG, JPG, JPEG",
-    "dragTitle": "Drag and drop files to upload",
-    "dragSubtitle": "or click to select files",
-    "supportedFormats": "Supported: PDF, CSV, PNG, JPG, JPEG",
-    "or": "or",
-    "clickToSelect": "Click to select files",
-    "multipleHint": "You can upload multiple files at once",
-    "selectedFiles": "Selected Files",
-    "uploadAll": "Upload All",
-    "clearList": "Clear List",
-    "status": {
-      "idle": "Ready",
-      "queued": "Queued",
-      "uploading": "Uploading",
-      "success": "Completed",
-      "error": "Failed"
-    },
-    "actions": {
-      "retry": "Retry",
-      "remove": "Remove",
-      "clearAll": "Clear all"
-    },
-    "messages": {
-      "unsupportedType": "Unsupported file type",
-      "uploadFailed": "Upload failed",
-      "uploadSucceeded": "Upload succeeded",
-      "processing": "Processing",
-      "parsed": "Parsed: {count} transactions"
-    }
   },
   "accounts": {
     "title": "My Accounts",
