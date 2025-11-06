@@ -65,6 +65,14 @@ export default function HomePage() {
         <div className="text-center text-gray-600">
           <p>✅ Frontend deployed successfully to Vercel!</p>
           <p className="text-sm mt-2">Note: Temporarily using /home route. Will restore i18n routing after fixing compatibility issues.</p>
+          <div className="mt-4 p-4 bg-blue-50 rounded">
+            <p className="font-semibold mb-2">🧪 For E2E Testing - Direct Backend API Access:</p>
+            <div className="flex gap-2 justify-center text-sm">
+              <a href="https://financial-advisor-production-e0a9.up.railway.app/docs" target="_blank" className="text-blue-600 hover:underline">API Docs</a>
+              <span>|</span>
+              <a href="https://financial-advisor-production-e0a9.up.railway.app/health" target="_blank" className="text-blue-600 hover:underline">Health Check</a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
