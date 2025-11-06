@@ -1,0 +1,29 @@
+{
+  "backend_url": "https://financial-advisor-production-e0a9.up.railway.app",
+  "started_at": 1762412253.6395102,
+  "tests": [
+    {
+      "name": "Root Endpoint",
+      "pass": true
+    },
+    {
+      "name": "Health Check",
+      "pass": true
+    },
+    {
+      "name": "User Registration",
+      "pass": true
+    },
+    {
+      "name": "User Login",
+      "pass": true
+    }
+  ],
+  "finished_at": 1762412255.784476,
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "total": 4
+  }
+}

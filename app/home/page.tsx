@@ -12,10 +12,10 @@ export default function HomePage() {
             CreditSphere
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/home" className="text-gray-600 hover:text-gray-900">
+            <Link href="/en/login" className="text-gray-600 hover:text-gray-900">
               Login
             </Link>
-            <Link href="/home" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <Link href="/en/register" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
               Register
             </Link>
           </div>
@@ -32,10 +32,10 @@ export default function HomePage() {
             Automatically analyze spending, maximize credit card rewards, and optimize your credit health.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/home" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 shadow-lg">
+            <Link href="/en/register" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 shadow-lg">
               Start Free Analysis
             </Link>
-            <Link href="/home" className="bg-white text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 shadow-lg border">
+            <Link href="/en/pricing" className="bg-white text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 shadow-lg border">
               View Pricing
             </Link>
           </div>
