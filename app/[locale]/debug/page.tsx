@@ -1,4 +1,8 @@
-export default function DebugPage() {
+import { setRequestLocale } from 'next-intl/server';
+
+export default async function DebugPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <div>
       <h1>✅ Locale Route Works!</h1>
