@@ -39,5 +39,6 @@ USER appuser
 
 EXPOSE 8000
 
-# Run with 2 workers for low memory footprint
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+# Railway will override this with startCommand from railway.toml
+# Default for local development
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2
