@@ -1,0 +1,317 @@
+{
+  "amazon": {
+    "canonical": "Amazon",
+    "category": "shopping",
+    "aliases": [
+      "amzn",
+      "amazon.com",
+      "amazon.ca",
+      "amz mktp",
+      "amazon marketplace",
+      "prime video"
+    ]
+  },
+  "walmart": {
+    "canonical": "Walmart",
+    "category": "groceries",
+    "aliases": [
+      "wal-mart",
+      "walmart.com",
+      "walmart supercenter",
+      "walmart neighborhood"
+    ]
+  },
+  "loblaws": {
+    "canonical": "Loblaws",
+    "category": "groceries",
+    "aliases": [
+      "loblaws",
+      "loblaws supermarket",
+      "rcss",
+      "real canadian superstore",
+      "superstore"
+    ]
+  },
+  "metro": {
+    "canonical": "Metro",
+    "category": "groceries",
+    "aliases": [
+      "metro grocery",
+      "metro plus"
+    ]
+  },
+  "sobeys": {
+    "canonical": "Sobeys",
+    "category": "groceries",
+    "aliases": [
+      "sobeys grocery",
+      "sobeys urban fresh"
+    ]
+  },
+  "starbucks": {
+    "canonical": "Starbucks",
+    "category": "dining",
+    "aliases": [
+      "starbucks coffee",
+      "sbux"
+    ]
+  },
+  "mcdonalds": {
+    "canonical": "McDonald's",
+    "category": "dining",
+    "aliases": [
+      "mcdonald's",
+      "mcdonalds restaurant",
+      "mcd"
+    ]
+  },
+  "tim_hortons": {
+    "canonical": "Tim Hortons",
+    "category": "dining",
+    "aliases": [
+      "tim horton's",
+      "tim hortons cafe",
+      "tims"
+    ]
+  },
+  "uber": {
+    "canonical": "Uber",
+    "category": "transport",
+    "aliases": [
+      "uber trip",
+      "uber.com",
+      "uber technologies"
+    ]
+  },
+  "uber_eats": {
+    "canonical": "Uber Eats",
+    "category": "dining",
+    "aliases": [
+      "ubereats",
+      "uber eats"
+    ]
+  },
+  "lyft": {
+    "canonical": "Lyft",
+    "category": "transport",
+    "aliases": [
+      "lyft ride"
+    ]
+  },
+  "netflix": {
+    "canonical": "Netflix",
+    "category": "subscription",
+    "aliases": [
+      "netflix.com",
+      "netflix subscription"
+    ]
+  },
+  "spotify": {
+    "canonical": "Spotify",
+    "category": "subscription",
+    "aliases": [
+      "spotify ab",
+      "spotify premium"
+    ]
+  },
+  "apple": {
+    "canonical": "Apple",
+    "category": "subscription",
+    "aliases": [
+      "apple.com/bill",
+      "apple store",
+      "itunes",
+      "app store"
+    ]
+  },
+  "google": {
+    "canonical": "Google",
+    "category": "subscription",
+    "aliases": [
+      "google storage",
+      "google one",
+      "google play",
+      "youtube premium"
+    ]
+  },
+  "shell": {
+    "canonical": "Shell",
+    "category": "gas",
+    "aliases": [
+      "shell oil",
+      "shell canada"
+    ]
+  },
+  "esso": {
+    "canonical": "Esso",
+    "category": "gas",
+    "aliases": [
+      "esso gas",
+      "esso station"
+    ]
+  },
+  "petro_canada": {
+    "canonical": "Petro-Canada",
+    "category": "gas",
+    "aliases": [
+      "petro canada",
+      "petro-can"
+    ]
+  },
+  "shoppers": {
+    "canonical": "Shoppers Drug Mart",
+    "category": "pharmacy",
+    "aliases": [
+      "shoppers drug mart",
+      "shoppers drugmart",
+      "sdm"
+    ]
+  },
+  "rexall": {
+    "canonical": "Rexall",
+    "category": "pharmacy",
+    "aliases": [
+      "rexall pharmacy",
+      "rexall drug"
+    ]
+  },
+  "costco": {
+    "canonical": "Costco",
+    "category": "groceries",
+    "aliases": [
+      "costco wholesale",
+      "costco warehouse"
+    ]
+  },
+  "cineplex": {
+    "canonical": "Cineplex",
+    "category": "entertainment",
+    "aliases": [
+      "cineplex entertainment",
+      "cineplex odeon"
+    ]
+  },
+  "rogers": {
+    "canonical": "Rogers",
+    "category": "utilities",
+    "aliases": [
+      "rogers communications",
+      "rogers wireless"
+    ]
+  },
+  "bell": {
+    "canonical": "Bell",
+    "category": "utilities",
+    "aliases": [
+      "bell canada",
+      "bell mobility"
+    ]
+  },
+  "telus": {
+    "canonical": "Telus",
+    "category": "utilities",
+    "aliases": [
+      "telus communications"
+    ]
+  },
+  "hydro": {
+    "canonical": "Hydro",
+    "category": "utilities",
+    "aliases": [
+      "hydro one",
+      "toronto hydro",
+      "bc hydro",
+      "hydro quebec"
+    ]
+  },
+  "enbridge": {
+    "canonical": "Enbridge Gas",
+    "category": "utilities",
+    "aliases": [
+      "enbridge",
+      "enbridge gas distribution"
+    ]
+  },
+  "uber_canada": {
+    "canonical": "Uber",
+    "category": "transport",
+    "aliases": [
+      "uber canada",
+      "uber canada/ubertrip"
+    ]
+  },
+  "stm": {
+    "canonical": "STM Montreal",
+    "category": "transport",
+    "aliases": [
+      "stm",
+      "stm snowdon",
+      "stm bonaventure"
+    ]
+  },
+  "megabus": {
+    "canonical": "Megabus",
+    "category": "travel",
+    "aliases": [
+      "megabus canada"
+    ]
+  },
+  "kiwi": {
+    "canonical": "Kiwi.com",
+    "category": "travel",
+    "aliases": [
+      "kiwi.com",
+      "kiwi.com sro"
+    ]
+  },
+  "tnt": {
+    "canonical": "T&T Supermarket",
+    "category": "groceries",
+    "aliases": [
+      "t&t supermarket",
+      "tnt supermarket"
+    ]
+  },
+  "dollarama": {
+    "canonical": "Dollarama",
+    "category": "shopping",
+    "aliases": [
+      "dollarama"
+    ]
+  },
+  "pharmaprix": {
+    "canonical": "Pharmaprix",
+    "category": "pharmacy",
+    "aliases": [
+      "pharmaprix"
+    ]
+  },
+  "nespresso": {
+    "canonical": "Nespresso",
+    "category": "dining",
+    "aliases": [
+      "nespresso montreal"
+    ]
+  },
+  "lindt": {
+    "canonical": "Lindt",
+    "category": "shopping",
+    "aliases": [
+      "lindt canada"
+    ]
+  },
+  "miniso": {
+    "canonical": "MINISO",
+    "category": "shopping",
+    "aliases": [
+      "miniso"
+    ]
+  },
+  "snaplii": {
+    "canonical": "Snaplii",
+    "category": "shopping",
+    "aliases": [
+      "snaplii"
+    ]
+  }
+}

@@ -41,5 +41,14 @@ yarn-error.log*
 next-env.d.ts
 
 # monorepo directories (backend, test data, etc.)
-/_monorepo/
+/_monorepo/test_data/
+/_monorepo/track/
+/_monorepo/bankstatement/
+/_monorepo/backend/data/
+/_monorepo/backend/.env*
+/_monorepo/backend/venv/
+/_monorepo/backend/.venv/
+/_monorepo/backend/__pycache__/
+/_monorepo/backend/**/__pycache__/
+/_monorepo/backend/*.pyc
 /bankstatement/
