@@ -66,15 +66,6 @@ export function Navigation({ locale }: NavigationProps) {
               {t('nav.pricing')}
             </Link>
           </div>
-              {t('nav.pricing')}
-            </Link>
-          </div>
-              {t('nav.transactions')}
-            </Link>
-            <Link href={`/${locale}/pricing`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-              {t('nav.pricing')}
-            </Link>
-          </div>
 
           {/* Controls */}
           <div className="flex items-center space-x-4">
