@@ -1,0 +1,259 @@
+{
+  "brand": {
+    "name": "CreditSphere",
+    "tagline": "您的 AI 金融管家"
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "仪表板",
+    "upload": "上传账单",
+    "accounts": "账户",
+    "transactions": "交易记录",
+    "recommendations": "推荐卡片",
+    "pricing": "价格",
+    "login": "登录",
+    "register": "注册",
+    "logout": "登出",
+    "profile": "个人资料"
+  },
+  "hero": {
+    "title": "您的 AI 金融管家",
+    "subtitle": "自动分析支出、最大化信用卡收益、并智能优化您的信用健康。",
+    "cta_primary": "立即免费开始分析您的支出",
+    "cta_secondary": "解锁您的信用卡最大潜力"
+  },
+  "auth": {
+    "login_title": "欢迎回来",
+    "register_title": "免费开始",
+    "email": "邮箱",
+    "password": "密码",
+    "confirm_password": "确认密码",
+    "login_button": "登录",
+    "register_button": "创建账户",
+    "no_account": "还没有账户？",
+    "have_account": "已有账户？",
+    "register_link": "注册",
+    "login_link": "登录",
+    "loading": "加载中...",
+    "password_mismatch": "密码不匹配",
+    "error_generic": "发生错误，请重试。",
+    "error_invalid_email": "请输入有效的邮箱地址",
+    "error_min_length": "密码至少需要8个字符",
+    "name": "姓名",
+    "name_optional": "姓名（可选）"
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "upload": "上传账单",
+    "recent_transactions": "最近交易",
+    "spending_breakdown": "支出分析",
+    "stats": "统计数据",
+    "upload_success": "文件上传成功！处理中...",
+    "upload_error": "文件上传失败，请重试。",
+    "total_transactions": "总交易数",
+    "total_spent": "总支出",
+    "average_transaction": "平均交易"
+  },
+  "transactions": {
+    "title": "交易记录",
+    "search": "搜索交易...",
+    "filter_category": "按类别筛选",
+    "date": "日期",
+    "merchant": "商家",
+    "category": "类别",
+    "amount": "金额",
+    "no_transactions": "未找到交易记录"
+  },
+  "categories": {
+    "groceries": "超市购物",
+    "dining": "餐饮",
+    "subscription": "订阅服务",
+    "transport": "交通",
+    "rent": "房租",
+    "travel": "旅行",
+    "utilities": "水电气",
+    "pharmacy": "药店",
+    "gas": "加油",
+    "entertainment": "娱乐",
+    "shopping": "购物",
+    "other": "其他"
+  },
+  "vcm": {
+    "title": "信用健康",
+    "credit_limit": "总信用额度",
+    "used_credit": "已用额度",
+    "utilization": "利用率",
+    "health_status": "健康状态",
+    "optimal": "最佳",
+    "underutilized": "利用率偏低",
+    "elevated": "偏高",
+    "high": "过高",
+    "no_cards": "未找到信用卡",
+    "card_details": "信用卡详情"
+  },
+  "common": {
+    "view_all": "查看全部",
+    "retry": "重试",
+    "loading": "加载中...",
+    "cancel": "取消",
+    "save": "保存",
+    "close": "关闭"
+  },
+  "errors": {
+    "load_vcm": "加载信用概览失败。",
+    "load_accounts": "加载账户数据失败。",
+    "network": "网络错误，请检查您的连接。",
+    "server": "服务器错误，请稍后重试。",
+    "unauthorized": "未授权，请登录。",
+    "unknown": "发生未知错误。"
+  },
+  "pricing": {
+    "title": "选择您的方案",
+    "analyst": {
+      "name": "分析师版",
+      "price": "免费",
+      "description": "适合入门用户",
+      "features": [
+        "账单上传",
+        "基础分类",
+        "饼图可视化",
+        "年度总结",
+        "每月 100 次 AI 调用"
+      ]
+    },
+    "optimizer": {
+      "name": "优化师版",
+      "price_monthly": "¥68/月",
+      "price_yearly": "¥688/年",
+      "description": "最大化您的奖励",
+      "features": [
+        "分析师版所有功能",
+        "奖励引擎",
+        "信用管理指导",
+        "深度 AI 分析",
+        "每月 1,000 次 AI 调用"
+      ]
+    },
+    "autopilot": {
+      "name": "自动驾驶版",
+      "price_monthly": "¥138/月",
+      "price_yearly": "¥1,388/年",
+      "description": "全自动管理",
+      "features": [
+        "优化师版所有功能",
+        "自动支付",
+        "实时提醒",
+        "高级集成",
+        "每月 3,000 次 AI 调用"
+      ]
+    },
+    "cta": "立即开始"
+  },
+  "upload": {
+    "title": "上传银行账单",
+    "subtitle": "支持格式：PDF、CSV、PNG、JPG、JPEG",
+    "instructions": "上传您的银行账单（PDF、CSV 或图片格式）",
+    "acceptTypes": "支持格式：PDF、CSV、PNG、JPG、JPEG",
+    "sizeLimit": "最大文件大小：25MB",
+    "selectFiles": "选择文件",
+    "dragDrop": "或拖拽文件到此处",
+    "uploading": "上传中...",
+    "success": "上传成功！",
+    "failed": "上传失败",
+    "dragTitle": "拖拽文件到此处上传",
+    "dragSubtitle": "或点击选择文件",
+    "supportedFormats": "支持：PDF、CSV、PNG、JPG、JPEG",
+    "or": "或",
+    "clickToSelect": "点击选择文件",
+    "multipleHint": "可一次上传多个文件",
+    "selectedFiles": "已选择文件",
+    "uploadAll": "上传全部",
+    "clearList": "清空列表",
+    "history": {
+      "title": "上传历史",
+      "empty": "暂无上传文件"
+    },
+    "status": {
+      "idle": "就绪",
+      "queued": "已排队",
+      "uploading": "正在上传",
+      "success": "已完成",
+      "error": "失败"
+    },
+    "actions": {
+      "retry": "重试",
+      "remove": "移除",
+      "clearAll": "清空"
+    },
+    "messages": {
+      "unsupportedType": "不支持的文件类型",
+      "uploadFailed": "上传失败",
+      "uploadSucceeded": "上传成功",
+      "processing": "处理中",
+      "parsed": "已解析：{count} 笔交易"
+    }
+  },
+  "accounts": {
+    "title": "我的账户",
+    "subtitle": "你的银行与信用卡账户",
+    "totalBalance": "总余额",
+    "totalSpent": "总消费",
+    "accountCount": "账户数",
+    "total_accounts": "账户总数",
+    "active_cards": "活跃信用卡",
+    "no_accounts": "暂无账户",
+    "spendingBreakdown": "支出分类",
+    "accountList": "账户列表",
+    "uploadNew": "上传新账单",
+    "viewTransactions": "查看交易",
+    "deleteAccount": "删除",
+    "empty": "没有找到账户。上传账单开始使用。",
+    "reload": "重新加载",
+    "loading": "正在加载账户...",
+    "list": {
+      "institution": "银行",
+      "accountType": "账户类型",
+      "statementCount": "对账单",
+      "transactionCount": "交易",
+      "dateRange": "时间范围",
+      "lastStatement": "最近账单"
+    },
+    "accountType": {
+      "credit_card": "信用卡",
+      "checking": "支票账户",
+      "savings": "储蓄账户"
+    },
+    "errors": {
+      "loadFailed": "加载账户失败。",
+      "summaryFailed": "加载概览失败。",
+      "breakdownFailed": "加载分类数据失败。"
+    }
+  },
+  "recommendations": {
+    "title": "信用卡推荐",
+    "filterByMonths": "分析周期",
+    "months_3": "3个月",
+    "months_6": "6个月",
+    "months_12": "12个月",
+    "estimatedValue": "预计年收益",
+    "annualRewards": "奖励返现",
+    "welcomeBonus": "开卡奖励（摊销）",
+    "annualFee": "年费",
+    "topCategories": "主要返现类别",
+    "applyNow": "立即申请",
+    "viewDetails": "查看详情",
+    "emptyState": {
+      "noTransactions": "需要交易数据才能生成个性化推荐",
+      "uploadCTA": "立即上传您的银行账单开始分析",
+      "uploadButton": "上传账单",
+      "noResults": "暂无符合您条件的推荐卡片",
+      "contactSupport": "请稍后再试或联系客服"
+    },
+    "navExplanation": "NAV（净年化收益）= 年度奖励 + 开卡奖励摊销 - 年费"
+  },
+  "footer": {
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "coming_soon": "即将推出"
+  }
+}

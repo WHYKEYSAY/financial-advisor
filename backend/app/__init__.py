@@ -1,1 +1,0 @@
-"""CreditSphere Backend Application"""
