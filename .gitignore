@@ -33,7 +33,6 @@ htmlcov/
 venv/
 ENV/
 env/
-alembic/versions/
 
 # Node
 node_modules/
