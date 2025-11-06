@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { ThemeProvider } from 'next-themes';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { locales } from '@/i18n/request';
 import { Navigation } from '@/components/navigation';
 import '../globals.css';
@@ -13,14 +13,9 @@ export const metadata: Metadata = {
   description: 'Automatically analyze spending, maximize credit card rewards, and optimize your credit health.',
 };
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 export function generateStaticParams() {
@@ -44,7 +39,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider messages={messages}>
             <Navigation locale={locale} />
