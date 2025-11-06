@@ -30,6 +30,10 @@ COPY _monorepo/backend/alembic ./alembic
 COPY _monorepo/backend/alembic.ini .
 COPY _monorepo/backend/scripts ./scripts
 
+# Copy startup script
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Create non-root user for security
 RUN useradd -m -u 1000 appuser && \
     mkdir -p /app/data && \
