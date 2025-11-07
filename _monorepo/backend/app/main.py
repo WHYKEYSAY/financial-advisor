@@ -78,4 +78,16 @@ async def root():
 @app.get("/health")
 async def health():
     """Health check endpoint"""
-    return {"status": "ok"}
+    from sqlalchemy import inspect
+    from app.core.db import engine
+    
+    # Check if VCM columns exist
+    inspector = inspect(engine)
+    columns = [col['name'] for col in inspector.get_columns('cards')]
+    vcm_columns_exist = all(col in columns for col in ['current_balance', 'vcm_enabled', 'vcm_priority'])
+    
+    return {
+        "status": "ok",
+        "vcm_migration": "applied" if vcm_columns_exist else "pending",
+        "cards_columns": columns
+    }
