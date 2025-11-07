@@ -36,6 +36,45 @@ from app.services.credit_manager import (
 router = APIRouter(prefix="/vcm", tags=["VCM"])
 
 
+@router.get("/debug")
+def debug_overview(
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db)
+):
+    """Debug endpoint - returns raw data without Pydantic validation"""
+    try:
+        from decimal import Decimal
+        logger.info(f"Debug: Getting overview for user {current_user.id}")
+        
+        # Try to get credit overview
+        overview = get_credit_overview(db, current_user.id)
+        
+        # Convert to dict manually to bypass Pydantic
+        result = {
+            "status": "success",
+            "total_credit_limit": str(overview.total_credit_limit),
+            "total_used": str(overview.total_used),
+            "overall_utilization": str(overview.overall_utilization),
+            "health_status": overview.health_status,
+            "cards_count": len(overview.cards_summary),
+            "cards_summary_types": [type(card).__name__ for card in overview.cards_summary]
+        }
+        
+        logger.info(f"Debug: Successfully created result dict")
+        return result
+        
+    except Exception as e:
+        import traceback
+        error_details = {
+            "status": "error",
+            "error_type": type(e).__name__,
+            "error_message": str(e),
+            "traceback": traceback.format_exc()
+        }
+        logger.error(f"Debug error: {error_details}")
+        return error_details
+
+
 @router.get("/overview", response_model=CreditOverviewResponse)
 def get_overview(
     current_user: User = Depends(get_current_active_user),
