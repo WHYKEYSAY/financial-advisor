@@ -105,11 +105,15 @@ def list_transactions(
             "created_at": txn.created_at
         }
         
-        # Get merchant name if available
+        # Get merchant name if available, fallback to raw_merchant
         if txn.merchant_id:
             merchant = db.query(Merchant).filter(Merchant.id == txn.merchant_id).first()
             if merchant:
                 txn_dict["merchant_name"] = merchant.canonical_name
+        
+        # Fallback to raw_merchant if no canonical name found
+        if not txn_dict["merchant_name"] and txn.raw_merchant:
+            txn_dict["merchant_name"] = txn.raw_merchant
         
         response_transactions.append(TransactionResponse(**txn_dict))
     
