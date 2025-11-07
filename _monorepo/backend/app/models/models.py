@@ -90,6 +90,12 @@ class Card(Base):
     statement_day = Column(Integer)  # Day of month
     due_day = Column(Integer)  # Day of month
     is_active = Column(Boolean, default=True)
+    
+    # VCM (Virtual Credit Manager) fields
+    current_balance = Column(Numeric(10, 2), default=0)  # Current amount owed
+    vcm_enabled = Column(Boolean, default=False)  # Enrolled in VCM
+    vcm_priority = Column(Integer)  # Priority order for spending allocation (lower = higher priority)
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
