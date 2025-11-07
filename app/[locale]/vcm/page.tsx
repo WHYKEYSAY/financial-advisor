@@ -41,7 +41,7 @@ export default function VCMPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get('/vcm/overview');
+      const response = await api.get('vcm/overview');
       setOverview(response.data);
     } catch (err: any) {
       console.error('Error fetching VCM overview:', err);

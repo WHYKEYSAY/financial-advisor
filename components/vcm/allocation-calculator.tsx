@@ -64,7 +64,7 @@ export function AllocationCalculator({ cards, totalAvailableCredit }: Allocation
     try {
       setLoading(true);
       setError(null);
-      const response = await api.post('/vcm/allocate', { amount: amountNum });
+      const response = await api.post('vcm/allocate', { amount: amountNum });
       setAllocation(response.data);
     } catch (err: any) {
       console.error('Error calculating allocation:', err);
