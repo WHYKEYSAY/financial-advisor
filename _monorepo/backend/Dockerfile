@@ -26,6 +26,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY app ./app
+COPY alembic ./alembic
+COPY alembic.ini .
 
 # Create non-root user for security
 RUN useradd -m -u 1000 appuser && \
@@ -37,4 +39,5 @@ USER appuser
 EXPOSE 8000
 
 # Run with 2 workers for low memory footprint
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+# Run migrations before starting the server
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"]
