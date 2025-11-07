@@ -9,6 +9,7 @@
     "upload": "上传账单",
     "accounts": "账户",
     "transactions": "交易记录",
+    "vcm": "信用管理",
     "recommendations": "推荐卡片",
     "pricing": "价格",
     "login": "登录",
@@ -79,17 +80,56 @@
     "other": "其他"
   },
   "vcm": {
-    "title": "信用健康",
-    "credit_limit": "总信用额度",
-    "used_credit": "已用额度",
-    "utilization": "利用率",
-    "health_status": "健康状态",
-    "optimal": "最佳",
-    "underutilized": "利用率偏低",
-    "elevated": "偏高",
-    "high": "过高",
-    "no_cards": "未找到信用卡",
-    "card_details": "信用卡详情"
+    "title": "虚拟信用卡管理",
+    "subtitle": "优化信用卡支出，维持健康利用率",
+    "tryAgain": "重试",
+    "virtualCard": {
+      "title": "虚拟信用卡",
+      "totalLimit": "总信用额度",
+      "available": "可用额度",
+      "used": "已用额度",
+      "utilization": "总体利用率",
+      "utilizationBar": "信用利用率",
+      "cardsEnrolled": "已绑定 {count} 张卡"
+    },
+    "cards": {
+      "enrolled": "已绑定卡片",
+      "issuer": "发卡行",
+      "limit": "额度",
+      "balance": "余额",
+      "available": "可用",
+      "utilization": "利用率",
+      "noCards": "暂无绑定卡片"
+    },
+    "health": {
+      "optimal": "最佳",
+      "underutilized": "利用率偏低",
+      "elevated": "偏高",
+      "high": "过高",
+      "n_a": "无数据"
+    },
+    "allocator": {
+      "title": "消费分配器",
+      "subtitle": "查看如何最优地将消费分配到多张卡上",
+      "inputLabel": "我要消费",
+      "calculate": "计算分配方案",
+      "calculating": "计算中...",
+      "availableCredit": "可用额度",
+      "results": "分配结果",
+      "breakdown": "推荐分配方案",
+      "warnings": "警告",
+      "currentUtil": "当前",
+      "newUtil": "消费后",
+      "invalidAmount": "请输入有效金额",
+      "exceedsCredit": "金额超过可用额度",
+      "calculationFailed": "分配计算失败",
+      "noCardsMessage": "添加信用卡以使用消费分配器"
+    },
+    "noCards": {
+      "title": "暂无信用卡",
+      "description": "添加信用卡以开始使用虚拟信用卡管理功能",
+      "addCard": "添加卡片"
+    }
   },
   "common": {
     "view_all": "查看全部",

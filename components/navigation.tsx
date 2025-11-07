@@ -60,6 +60,15 @@ export function Navigation({ locale }: NavigationProps) {
                 <Link href={`/${locale}/transactions`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
                   {t('nav.transactions')}
                 </Link>
+                <Link href={`/${locale}/vcm`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.vcm')}
+                </Link>
+                <Link href={`/${locale}/recommendations`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.recommendations')}
+                </Link>
+                <Link href={`/${locale}/accounts`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  {t('nav.accounts')}
+                </Link>
               </>
             )}
             <Link href={`/${locale}/pricing`} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">

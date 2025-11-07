@@ -7,6 +7,9 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "transactions": "Transactions",
+    "vcm": "VCM",
+    "recommendations": "Recommendations",
+    "accounts": "Accounts",
     "pricing": "Pricing",
     "login": "Login",
     "register": "Register",
@@ -77,17 +80,56 @@
     "other": "Other"
   },
   "vcm": {
-    "title": "Credit Health",
-    "credit_limit": "Total Credit Limit",
-    "used_credit": "Used Credit",
-    "utilization": "Utilization",
-    "health_status": "Health Status",
-    "optimal": "Optimal",
-    "underutilized": "Under-utilized",
-    "elevated": "Elevated",
-    "high": "High",
-    "no_cards": "No credit cards found",
-    "card_details": "Card Details"
+    "title": "Virtual Credit Manager",
+    "subtitle": "Optimize your credit card spending and maintain healthy utilization",
+    "tryAgain": "Try Again",
+    "virtualCard": {
+      "title": "Virtual Credit Card",
+      "totalLimit": "Total Credit Limit",
+      "available": "Available Credit",
+      "used": "Used Credit",
+      "utilization": "Overall Utilization",
+      "utilizationBar": "Credit Utilization",
+      "cardsEnrolled": "{count} cards enrolled"
+    },
+    "cards": {
+      "enrolled": "Enrolled Cards",
+      "issuer": "Issuer",
+      "limit": "Limit",
+      "balance": "Balance",
+      "available": "Available",
+      "utilization": "utilization",
+      "noCards": "No cards enrolled yet"
+    },
+    "health": {
+      "optimal": "Optimal",
+      "underutilized": "Under-utilized",
+      "elevated": "Elevated",
+      "high": "High",
+      "n_a": "N/A"
+    },
+    "allocator": {
+      "title": "Spending Allocator",
+      "subtitle": "See how to split a purchase across your cards optimally",
+      "inputLabel": "I want to spend",
+      "calculate": "Calculate Allocation",
+      "calculating": "Calculating...",
+      "availableCredit": "Available Credit",
+      "results": "Allocation Results",
+      "breakdown": "Recommended Allocation",
+      "warnings": "Warnings",
+      "currentUtil": "Current",
+      "newUtil": "After",
+      "invalidAmount": "Please enter a valid amount",
+      "exceedsCredit": "Amount exceeds available credit",
+      "calculationFailed": "Failed to calculate allocation",
+      "noCardsMessage": "Add credit cards to use the allocation calculator"
+    },
+    "noCards": {
+      "title": "No Credit Cards",
+      "description": "Add your credit cards to start using Virtual Credit Manager",
+      "addCard": "Add Card"
+    }
   },
   "pricing": {
     "title": "Choose Your Plan",
