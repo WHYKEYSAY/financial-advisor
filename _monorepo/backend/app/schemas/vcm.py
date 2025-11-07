@@ -5,7 +5,7 @@ from typing import List, Optional
 from decimal import Decimal
 from datetime import date
 from enum import Enum
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class HealthStatus(str, Enum):
@@ -28,7 +28,8 @@ class CardSummary(BaseModel):
     health_status: HealthStatus = Field(..., description="Health status based on utilization")
     last4: Optional[str] = Field(None, description="Last 4 digits of card number")
 
-    @validator('credit_limit', 'current_balance', 'utilization_rate', pre=True)
+    @field_validator('credit_limit', 'current_balance', 'utilization_rate', mode='before')
+    @classmethod
     def round_decimals(cls, v):
         """Round all decimal fields to 2 decimal places"""
         if v is None:
@@ -58,7 +59,8 @@ class CreditOverviewResponse(BaseModel):
     health_status: HealthStatus = Field(..., description="Overall health status")
     cards_summary: List[CardSummary] = Field(..., description="Summary of each card")
 
-    @validator('total_credit_limit', 'total_used', 'overall_utilization', pre=True)
+    @field_validator('total_credit_limit', 'total_used', 'overall_utilization', mode='before')
+    @classmethod
     def round_decimals(cls, v):
         """Round all decimal fields to 2 decimal places"""
         if v is None:
@@ -83,7 +85,8 @@ class UtilizationResponse(BaseModel):
     health_status: HealthStatus = Field(..., description="Overall health status")
     per_card: List[CardSummary] = Field(..., description="Utilization breakdown per card")
 
-    @validator('overall_utilization', pre=True)
+    @field_validator('overall_utilization', mode='before')
+    @classmethod
     def round_decimals(cls, v):
         """Round all decimal fields to 2 decimal places"""
         if v is None:
@@ -109,7 +112,8 @@ class AddCardRequest(BaseModel):
     statement_day: Optional[int] = Field(None, description="Statement day of month (1-31)", ge=1, le=31)
     due_day: Optional[int] = Field(None, description="Payment due day of month (1-31)", ge=1, le=31)
 
-    @validator('credit_limit', pre=True)
+    @field_validator('credit_limit', mode='before')
+    @classmethod
     def round_limit(cls, v):
         """Round credit limit to 2 decimal places"""
         return Decimal(str(v)).quantize(Decimal('0.01'))
@@ -136,7 +140,8 @@ class AddCardResponse(BaseModel):
     last4: Optional[str] = None
     message: str = Field(default="Card added successfully")
 
-    @validator('credit_limit', pre=True)
+    @field_validator('credit_limit', mode='before')
+    @classmethod
     def round_limit(cls, v):
         """Round credit limit to 2 decimal places"""
         if v is None:
@@ -155,7 +160,8 @@ class PaymentReminderResponse(BaseModel):
     minimum_payment: Optional[Decimal] = Field(None, description="Minimum payment amount (CAD)")
     statement_balance: Optional[Decimal] = Field(None, description="Statement balance (CAD)")
 
-    @validator('current_balance', 'minimum_payment', 'statement_balance', pre=True)
+    @field_validator('current_balance', 'minimum_payment', 'statement_balance', mode='before')
+    @classmethod
     def round_decimals(cls, v):
         """Round all decimal fields to 2 decimal places"""
         if v is None:
@@ -181,7 +187,8 @@ class SpendingAllocationRequest(BaseModel):
     """Request to optimize spending allocation across cards"""
     amount: Decimal = Field(..., description="Amount to spend (CAD)", gt=0)
     
-    @validator('amount', pre=True)
+    @field_validator('amount', mode='before')
+    @classmethod
     def round_amount(cls, v):
         """Round amount to 2 decimal places"""
         return Decimal(str(v)).quantize(Decimal('0.01'))
@@ -206,14 +213,16 @@ class CardPaymentStep(BaseModel):
     available_credit: Decimal = Field(..., description="Available credit before charge (CAD)")
     reason: str = Field(..., description="Why this allocation was chosen")
     
-    @validator('amount_to_charge', 'available_credit', pre=True)
+    @field_validator('amount_to_charge', 'available_credit', mode='before')
+    @classmethod
     def round_money(cls, v):
         """Round monetary amounts to 2 decimal places"""
         if v is None:
             return Decimal('0.00')
         return Decimal(str(v)).quantize(Decimal('0.01'))
     
-    @validator('current_utilization', 'new_utilization', pre=True)
+    @field_validator('current_utilization', 'new_utilization', mode='before')
+    @classmethod
     def round_utilization(cls, v):
         """Round utilization to 2 decimal places"""
         if v is None:
@@ -245,7 +254,8 @@ class SpendingAllocationResponse(BaseModel):
     total_available_credit: Decimal = Field(..., description="Total available credit (CAD)")
     warnings: List[str] = Field(default_factory=list, description="Warnings or concerns")
     
-    @validator('total_amount', 'total_available_credit', pre=True)
+    @field_validator('total_amount', 'total_available_credit', mode='before')
+    @classmethod
     def round_money(cls, v):
         """Round monetary amounts to 2 decimal places"""
         if v is None:
