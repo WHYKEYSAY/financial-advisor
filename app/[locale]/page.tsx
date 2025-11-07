@@ -1,10 +1,11 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 
 export default function HomePage() {
   const t = useTranslations();
+  const locale = useLocale();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -16,13 +17,13 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <Link
-              href="/login"
+              href={`/${locale}/login`}
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
             >
               {t('nav.login')}
             </Link>
             <Link
-              href="/register"
+              href={`/${locale}/register`}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
             >
               {t('nav.register')}
@@ -42,13 +43,13 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/register"
+              href={`/${locale}/register`}
               className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
             >
               {t('hero.cta_primary')}
             </Link>
             <Link
-              href="/pricing"
+              href={`/${locale}/pricing`}
               className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-lg border border-gray-200 dark:border-gray-700"
             >
               {t('hero.cta_secondary')}
@@ -85,8 +86,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="container mx-auto px-4 py-8 mt-32 border-t border-gray-200 dark:border-gray-700">
         <div className="flex justify-center gap-8 text-sm text-gray-600 dark:text-gray-400">
-          <Link href="/privacy">{t('footer.privacy')}</Link>
-          <Link href="/terms">{t('footer.terms')}</Link>
+          <span className="text-gray-500">{t('footer.coming_soon')}</span>
         </div>
       </footer>
     </div>
