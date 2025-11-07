@@ -69,13 +69,17 @@ def get_overview(
     - `high`: >50% utilization
     """
     try:
+        logger.info(f"Getting VCM overview for user {current_user.id}")
         overview = get_credit_overview(db, current_user.id)
+        logger.info(f"Successfully retrieved overview for user {current_user.id}: {len(overview.cards_summary)} cards")
         return overview
     except Exception as e:
+        import traceback
         logger.error(f"Error getting credit overview for user {current_user.id}: {e}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to retrieve credit overview"
+            detail=f"Failed to retrieve credit overview: {str(e)}"
         )
 
 
